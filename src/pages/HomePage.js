@@ -3,6 +3,7 @@ import TicketList from '../components/TicketList';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// Define the HomePage component that serves as the main page
 function HomePage() {
   return (
     <div className="container mt-5">
@@ -20,3 +21,4 @@ function HomePage() {
 }
 
 export default HomePage;
+// Export the HomePage component as the default export

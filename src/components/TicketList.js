@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export const statusMapping = {
+export const statusMapping = {  // Mapping state of the ticket to the numbers between 1 to 6
   1: 'New',
   2: 'Open',
   3: 'Awaiting Response - User',
@@ -12,14 +12,14 @@ export const statusMapping = {
   6: 'Closed'
 };
 
-export const ticketTypeMapping = {
+export const ticketTypeMapping = { // Mapping type of the ticket to the numbers between 1 to 4
   1: 'Bug',
   2: 'Feature Request',
   3: 'Task',
   4: 'Improvement'
 };
 
-export const priorityMapping = {
+export const priorityMapping = { // Mapping priority level of the ticket
   1: 'Low',
   2: 'Medium',
   3: 'High',
@@ -27,7 +27,7 @@ export const priorityMapping = {
   5: 'None'
 };
 
-const getPriorityColor = (priorityId) => {
+const getPriorityColor = (priorityId) => { // Gives the colour in the homepage depending upon the priority level
   switch (priorityId) {
     case 1: return 'green';      // Low
     case 2: return 'yellow';     // Medium
@@ -41,7 +41,7 @@ function TicketList() {
   const [tickets, setTickets] = useState([]);
   console.log(tickets);
   useEffect(() => {
-    // Replace with the actual API URL for your .NET Core API
+    // Replace this URL with the actual API URL for your .NET Core API
     axios.get('http://localhost:5000/api/tickets')  
       .then(response => setTickets(response.data))
       .catch(error => console.log(error));
@@ -54,7 +54,8 @@ function TicketList() {
       ) : (
         <table className="table table-bordered" style={{ borderColor: 'black', textAlign:'center' }}>
           <thead>
-            <tr style={{ borderColor: 'white', borderBottomColor:'black' }}>
+            {/* Displays column names for the table*/}
+            <tr style={{ borderColor: 'white', borderBottomColor:'black' }}> 
               <th scope="col">Lvl</th>
               <th scope="col">#</th>
               <th scope="col">Title</th>

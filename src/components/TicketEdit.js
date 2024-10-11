@@ -9,7 +9,7 @@ function TicketEdit() {
   const [reply, setReply] = useState('');
 
   useEffect(() => {
-    axios.get(`/api/tickets/${id}`)  // fetch ticket details
+    axios.get(`/api/tickets/${id}`)  // fetching ticket details
       .then(response => setTicket(response.data))
       .catch(error => console.log(error));
   }, [id]);

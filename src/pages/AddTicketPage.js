@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function AddTicketPage() {
+    // Defining variables and setting their initial values as empty string
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -18,6 +19,7 @@ function AddTicketPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        //Creating a new ticket
         const newTicket = {
           Title: title,
           Description: description,
@@ -31,6 +33,7 @@ function AddTicketPage() {
           LastModified: new Date().toISOString(),
         };
 
+        // Sending POST request to API to add new ticket
         try {
             await axios.post('http://localhost:5000/api/tickets', newTicket);
             alert('Ticket added successfully!');
@@ -39,7 +42,8 @@ function AddTicketPage() {
             console.error('Error adding ticket:', error);
         }
     };
-
+    
+    // Form for adding new ticket
     return (
         <div className="container mt-5">
             <div className="card">

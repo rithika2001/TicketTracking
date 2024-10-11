@@ -6,27 +6,30 @@ import {
   statusMapping,
   ticketTypeMapping,
   priorityMapping,
-} from "../components/TicketList";
+} from "../components/TicketList"; // Importing Mappings for ticket attributes;
 
 function EditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [ticket, setTicket] = useState(null);
-  const [replies, setReplies] = useState(null);
+  // Variables for ticket data and replies
+  const [ticket, setTicket] = useState(null); // stores ticket details
+  const [replies, setReplies] = useState(null); // stores replies for the ticket
   const [reply, setReply] = useState("");
   const formRef = useRef(null);
 
   useEffect(() => {
     const fetchTicket = async () => {
       try {
+        // Fetch the ticket details from the backend API using the ticket ID
         const response1 = await axios.get(
           `http://localhost:5000/api/tickets/${id}`
         );
+        // Fetch replies from the API
         const response2 = await axios.get("http://localhost:5000/api/replies");
         setTicket(response1.data);
         setReplies(response2.data);
       } catch (error) {
-        console.error("Error fetching ticket:", error);
+        console.error("Error fetching ticket:", error); // Displays this message if there is any error
       }
     };
 
@@ -41,6 +44,7 @@ function EditPage() {
       return;
     }
 
+    // Create a new reply object with the current reply and ticket ID
     const replyData = {
       Reply: reply,
       TId: ticket.id,
@@ -48,9 +52,11 @@ function EditPage() {
     };
 
     try {
+      // Send a POST request to add the new reply 
       await axios.post(`http://localhost:5000/api/replies/`, replyData);
       alert("Reply added successfully!");
       setReply("");
+      // Fetch the updated replies and update the state
       const updatedReplies = await axios.get("http://localhost:5000/api/replies"); 
       setReplies(updatedReplies.data);
     } catch (error) {
@@ -65,6 +71,7 @@ function EditPage() {
     }
   };
 
+  // Shows loading message until the ticket data is fetched
   if (!ticket) {
     return <p>Loading...</p>;
   }
@@ -148,4 +155,4 @@ function EditPage() {
   );
 }
 
-export default EditPage;
+export default EditPage; // Export the EditPage component as the default export 
