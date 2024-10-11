@@ -7,28 +7,34 @@ function AddTicketPage() {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [application, setApplication] = useState('');
     const [module, setModule] = useState('');
     const [type, setType] = useState('');
     const [state, setState] = useState('');
     const [level, setLevel] = useState('');
+    const [envID, setEnvID] = useState('');
 
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const newTicket = {
-            title,
-            description,
-            module,
-            type,
-            state,
-            level,
+          Title: title,
+          Description: description,
+          ApplicationId: application,
+          ApplicationName: module,
+          TicketTypeId: type,
+          StatusId: state,
+          PriorityId: level,
+          InstalledEnvironmentId: envID,
+          Date: new Date().toISOString(),
+          LastModified: new Date().toISOString(),
         };
 
         try {
-            await axios.post('http://localhost:5000/api/tickets', newTicket); // Adjust the API URL as necessary
+            await axios.post('http://localhost:5000/api/tickets', newTicket);
             alert('Ticket added successfully!');
-            navigate('/'); // Redirect to the homepage or wherever appropriate
+            navigate('/');
         } catch (error) {
             console.error('Error adding ticket:', error);
         }
@@ -63,6 +69,16 @@ function AddTicketPage() {
                                 onChange={(e) => setDescription(e.target.value)}
                                 required
                             ></textarea>
+                        </div>
+                        <div className="form-group mb-3">
+                            <label htmlFor="module">Application</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="application"
+                                value={application}
+                                onChange={(e) => setApplication(e.target.value)}
+                            />
                         </div>
                         <div className="form-group mb-3">
                             <label htmlFor="module">Module</label>
@@ -104,6 +120,16 @@ function AddTicketPage() {
                                 onChange={(e) => setLevel(e.target.value)}
                             />
                         </div>
+                        <div className="form-group mb-3">
+                            <label htmlFor="level">Installed Environment</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="envID"
+                                value={envID}
+                                onChange={(e) => setEnvID(e.target.value)}
+                            />
+                        </div>
                         <button type="submit" className="btn btn-success mt-3">Add Ticket</button>
                     </form>
                 </div>
@@ -113,3 +139,4 @@ function AddTicketPage() {
 }
 
 export default AddTicketPage;
+

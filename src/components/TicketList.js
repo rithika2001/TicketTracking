@@ -39,10 +39,10 @@ const getPriorityColor = (priorityId) => {
 
 function TicketList() {
   const [tickets, setTickets] = useState([]);
-
+  console.log(tickets);
   useEffect(() => {
     // Replace with the actual API URL for your .NET Core API
-    axios.get('http://localhost:5279/api/tickets')  
+    axios.get('http://localhost:5000/api/tickets')  
       .then(response => setTickets(response.data))
       .catch(error => console.log(error));
   }, []);

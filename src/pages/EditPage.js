@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,14 +14,15 @@ function EditPage() {
   const [ticket, setTicket] = useState(null);
   const [replies, setReplies] = useState(null);
   const [reply, setReply] = useState("");
+  const formRef = useRef(null);
 
   useEffect(() => {
     const fetchTicket = async () => {
       try {
         const response1 = await axios.get(
-          `http://localhost:5279/api/tickets/${id}`
+          `http://localhost:5000/api/tickets/${id}`
         );
-        const response2 = await axios.get("http://localhost:5279/api/replies");
+        const response2 = await axios.get("http://localhost:5000/api/replies");
         setTicket(response1.data);
         setReplies(response2.data);
       } catch (error) {
@@ -35,18 +36,32 @@ function EditPage() {
   const handleReplySubmit = async (e) => {
     e.preventDefault();
 
+    if (!reply.trim()) {
+      alert("Reply cannot be empty!");
+      return;
+    }
+
     const replyData = {
-      content: reply,
-      ticketId: ticket.id,
-      createdAt: new Date().toISOString(),
+      Reply: reply,
+      TId: ticket.id,
+      ReplyDate: new Date().toISOString(),
     };
 
     try {
-      await axios.post(`http://localhost:5279/api/replies/`, replyData);
+      await axios.post(`http://localhost:5000/api/replies/`, replyData);
       alert("Reply added successfully!");
       setReply("");
+      const updatedReplies = await axios.get("http://localhost:5000/api/replies"); 
+      setReplies(updatedReplies.data);
     } catch (error) {
       console.error("Error adding reply:", error);
+    }
+  };
+
+  const handleSaveClick = () => {
+    // Manually submit the form
+    if (formRef.current) {
+      formRef.current.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
     }
   };
 
@@ -71,13 +86,13 @@ function EditPage() {
               <button className="btn btn-secondary me-2" onClick={handleClose}>
                 Close
               </button>
-              <button type="submit" className="btn btn-success">
+              <button type="submit" className="btn btn-success" onClick={handleSaveClick}>
                 Save
               </button>
             </div>
           </div>
           <h5 className="mt-2">New Reply</h5>
-          <form onSubmit={handleReplySubmit}>
+          <form ref={formRef} onSubmit={handleReplySubmit}>
             <div className="form-group">
               <textarea
                 className="form-control"
